@@ -28,13 +28,14 @@ public class JdbcStudentRepository implements StudentRepository {
         }
     }
     private void update(Student model) {
-        try (PreparedStatement statement = connection.prepareStatement("UPDATE STUDENT SET  BORN_ON = ?, GENRE = ?, FIRST_NAME = ?, LAST_NAME = ? WHERE ID = ?")) {
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE STUDENT SET  ADDRESS = ?, BORN_ON = ?, GENRE = ?, FIRST_NAME = ?, LAST_NAME = ? WHERE ID = ?")) {
 
-            statement.setDate(1, Date.valueOf(model.getBornOn()));
-            statement.setInt(2, model.getGenre().getId());
-            statement.setString(3, model.getFirstName());
-            statement.setString(4, model.getLastName());
-            statement.setInt(5, model.getId());
+            statement.setDate(2, Date.valueOf(model.getBornOn()));
+            statement.setInt(1, model.getAddress().getId());
+            statement.setInt(3, model.getGenre().getId());
+            statement.setString(4, model.getFirstName());
+            statement.setString(5, model.getLastName());
+            statement.setInt(6, model.getId());
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -43,12 +44,12 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     private void insert(Student model) {
-        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO STUDENT ( BORN_ON, GENRE, FIRST_NAME, LAST_NAME) VALUES ( ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
-
-            statement.setDate(1, Date.valueOf(model.getBornOn()));
-            statement.setInt(2, model.getGenre().getId());
-            statement.setString(3, model.getFirstName());
-            statement.setString(4, model.getLastName());
+        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO STUDENT ( ADDRESS, BORN_ON, GENRE, FIRST_NAME, LAST_NAME) VALUES ( ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, model.getAddress().getId());
+            statement.setDate(2, Date.valueOf(model.getBornOn()));
+            statement.setInt(3, model.getGenre().getId());
+            statement.setString(4, model.getFirstName());
+            statement.setString(5, model.getLastName());
             statement.executeUpdate();
 
 

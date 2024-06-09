@@ -1,11 +1,14 @@
 package cat.uvic.teknos.coursemanagement.domain.jpa.repositories;
 
 import cat.uvic.teknos.coursemanagement.domain.jpa.models.JpaCourse;
+import cat.uvic.teknos.coursemanagement.domain.jpa.models.JpaGenre;
 import cat.uvic.teknos.coursemanagement.models.Course;
+import cat.uvic.teknos.coursemanagement.models.Genre;
 import cat.uvic.teknos.coursemanagement.repositories.CourseRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,48 +21,74 @@ public class JpaCourseRepository implements CourseRepository {
     }
 
     @Override
-    public void save(Course course) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
+    public void save(Course model) {
+        if (model.getId() == 0) {
+            insert(model);
+        } else {
+            update(model);
+        }
+    }
 
+    private void update(Course model) {
+        var entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
-            if (course.getId() == 0) {
-                entityManager.persist(course);
-            } else {
-                entityManager.merge(course);
-            }
+            entityManager.merge(model);
             transaction.commit();
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            e.printStackTrace(); // Aquí podrías usar un framework de logging
+            throw e;
         } finally {
             entityManager.close();
         }
     }
 
+    private void insert(Course model) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            entityManager.persist(model);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            entityManager.close();
+        }
+    }
     @Override
-    public void delete(Course course) {
+    public void delete(Course model) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
-
         try {
             transaction.begin();
-            Course mergedCourse = entityManager.merge(course);
-            entityManager.remove(mergedCourse);
+            // Find all students that reference this genre and set their genre to null
+            Query query = entityManager.createNativeQuery("DELETE FROM STUDENT_COURSE WHERE COURSE = ?");
+            query.setParameter(1, model.getId());
+            query.executeUpdate();
+
+            // Now find and delete the genre
+            JpaCourse managedCourse = entityManager.find(JpaCourse.class, model.getId());
+            if (managedCourse != null) {
+                entityManager.remove(managedCourse);
+            }
+
             transaction.commit();
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            e.printStackTrace(); // Aquí podrías usar un framework de logging
+            throw e;
         } finally {
             entityManager.close();
         }
     }
-
     @Override
     public Course get(Integer id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -74,7 +103,8 @@ public class JpaCourseRepository implements CourseRepository {
     public Set<Course> getAll() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         try {
-            return new HashSet<>(entityManager.createQuery("SELECT c FROM JpaCourse c", JpaCourse.class).getResultList());
+            Query query = entityManager.createQuery("SELECT c FROM JpaCourse c", JpaCourse.class);
+            return Set.copyOf(query.getResultList());
         } finally {
             entityManager.close();
         }

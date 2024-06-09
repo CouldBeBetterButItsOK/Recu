@@ -6,15 +6,13 @@ import cat.uvic.teknos.coursemanagement.models.Genre;
 import cat.uvic.teknos.coursemanagement.models.Student;
 import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "STUDENT")
-public class JpaStudent implements Student, Serializable {
+public class JpaStudent implements Student{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,17 +23,23 @@ public class JpaStudent implements Student, Serializable {
     @Column(name = "LAST_NAME")
     private String lastName;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = cat.uvic.teknos.coursemanagement.domain.jpa.models.JpaAddress.class)
     @JoinColumn(name = "ADDRESS")
     private Address address;
 
     @Column(name = "BORN_ON")
-    private Date bornOn;
+    private LocalDate bornOn;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = cat.uvic.teknos.coursemanagement.domain.jpa.models.JpaGenre.class)
     @JoinColumn(name = "GENRE")
     private Genre genre;
 
+    @ManyToMany(targetEntity = cat.uvic.teknos.coursemanagement.domain.jpa.models.JpaCourse.class)
+    @JoinTable(
+            name = "STUDENT_COURSE",
+            joinColumns = @JoinColumn(name = "STUDENT"),
+            inverseJoinColumns = @JoinColumn(name = "COURSE")
+    )
     private Set<Course> courses = new HashSet<>();
     @Override
     public int getId() {
@@ -103,6 +107,7 @@ public class JpaStudent implements Student, Serializable {
 
     @Override
     public void setAddress(Address address) {
+        this.address = address;
 
     }
 }

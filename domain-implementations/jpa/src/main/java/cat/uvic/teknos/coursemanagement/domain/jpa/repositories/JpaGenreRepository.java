@@ -1,7 +1,6 @@
 package cat.uvic.teknos.coursemanagement.domain.jpa.repositories;
 
 import cat.uvic.teknos.coursemanagement.domain.jpa.models.JpaGenre;
-import cat.uvic.teknos.coursemanagement.domain.jpa.models.JpaStudent;
 import cat.uvic.teknos.coursemanagement.models.Genre;
 import cat.uvic.teknos.coursemanagement.repositories.GenreRepository;
 import jakarta.persistence.EntityManager;
@@ -28,7 +27,7 @@ public class JpaGenreRepository implements GenreRepository {
     }
 
     private void update(Genre model) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        var entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();

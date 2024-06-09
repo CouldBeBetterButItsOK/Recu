@@ -33,6 +33,9 @@ public class BackOffice {
 
             switch (command) {
                 case "1" -> manageStudents();
+                case "2" -> manageCourse();
+                case "3" -> manageGenere();
+                case "4" -> manageAddress();
             }
 
         } while (!command.equals("exit"));
@@ -40,6 +43,9 @@ public class BackOffice {
         out.println("Bye!");
     }
 
+    private void manageCourse() { new CourseManager(in,out, repositoryFactory, modelFactory).start();}
+    private void manageAddress() {new AddressManager(in,out, repositoryFactory, modelFactory).start();}
+    private void manageGenere() {new AddressGenere(in,out, repositoryFactory, modelFactory).start();}
     private void manageStudents() {
         new StudentManager(in, out, repositoryFactory, modelFactory).start();
     }
@@ -54,6 +60,7 @@ public class BackOffice {
         out.println("1. Student");
         out.println("2. Course");
         out.println("3. Genre");
+        out.println("4. Address");
     }
 
     private void showBanner() {

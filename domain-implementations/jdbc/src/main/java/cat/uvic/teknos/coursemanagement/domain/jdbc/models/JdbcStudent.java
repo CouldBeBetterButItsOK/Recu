@@ -40,7 +40,7 @@ public class JdbcStudent implements Student {
 
     @Override
     public void setFirstName(String firstName) {
-
+    this.firstName = firstName;
     }
     @Override
     public String getFirstName() {
@@ -82,7 +82,7 @@ public class JdbcStudent implements Student {
 
     @Override
     public void setAddress(Address address) {
-
+        this.address = address;
     }
 
 

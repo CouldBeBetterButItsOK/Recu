@@ -1,10 +1,7 @@
 package cat.uvic.teknos.coursemanagement.domain.jpa.repositories;
 
 import cat.uvic.teknos.coursemanagement.exceptions.RepositoryException;
-import cat.uvic.teknos.coursemanagement.repositories.CourseRepository;
-import cat.uvic.teknos.coursemanagement.repositories.GenreRepository;
-import cat.uvic.teknos.coursemanagement.repositories.RepositoryFactory;
-import cat.uvic.teknos.coursemanagement.repositories.StudentRepository;
+import cat.uvic.teknos.coursemanagement.repositories.*;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
@@ -36,7 +33,8 @@ public class JpaRepositoryFactory implements RepositoryFactory {
     }
 
     @Override
-    public StudentRepository getStudentRepository() {
-        return null;
-    }
+    public StudentRepository getStudentRepository() {return new JpaStudentRepository(entityManagerFactory);}
+
+    @Override
+    public AddressRepository getAddressRepository() {return new JpaAddressRepository(entityManagerFactory);}
 }

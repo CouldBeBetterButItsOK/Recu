@@ -21,7 +21,7 @@ public class JpaCourse implements Course {
     @Column(name = "NAME")
     private String name;
 
-    @ManyToMany
+    @ManyToMany(targetEntity = JpaStudent.class)
     @JoinTable(
             name = "STUDENT_COURSE",
             joinColumns = @JoinColumn(name = "COURSE"),

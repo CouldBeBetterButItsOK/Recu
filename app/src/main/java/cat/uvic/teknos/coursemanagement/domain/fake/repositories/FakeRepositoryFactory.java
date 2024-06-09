@@ -1,9 +1,6 @@
 package cat.uvic.teknos.coursemanagement.domain.fake.repositories;
 
-import cat.uvic.teknos.coursemanagement.repositories.CourseRepository;
-import cat.uvic.teknos.coursemanagement.repositories.GenreRepository;
-import cat.uvic.teknos.coursemanagement.repositories.RepositoryFactory;
-import cat.uvic.teknos.coursemanagement.repositories.StudentRepository;
+import cat.uvic.teknos.coursemanagement.repositories.*;
 
 public class FakeRepositoryFactory implements RepositoryFactory {
     @Override
@@ -19,5 +16,10 @@ public class FakeRepositoryFactory implements RepositoryFactory {
     @Override
     public StudentRepository getStudentRepository() {
         return new FakeStudentRepository();
+    }
+
+    @Override
+    public AddressRepository getAddressRepository() {
+        return new FakeAddressRepository();
     }
 }

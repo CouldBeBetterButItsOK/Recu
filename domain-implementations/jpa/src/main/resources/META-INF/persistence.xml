@@ -7,6 +7,10 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>cat.uvic.teknos.coursemanagement.domain.jpa.models.JpaGenre</class>
+        <class>cat.uvic.teknos.coursemanagement.domain.jpa.models.JpaAddress</class>
+        <class>cat.uvic.teknos.coursemanagement.domain.jpa.models.JpaCourse</class>
+        <class>cat.uvic.teknos.coursemanagement.domain.jpa.models.JpaStudent</class>
+
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

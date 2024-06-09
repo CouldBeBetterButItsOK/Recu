@@ -28,15 +28,20 @@ class JdbcStudentRepositoryTest {
     void shouldInsertNewStudentTest() {
         var student = modelFactory.createStudent();
         var genere = new JdbcGenreRepository(connection).get(1);
-        var address = new JdbcAddressRepository(connection).get(1);
-        System.out.println(address.getId());
-        System.out.println(genere.getId());
-        student.setFirstName("John");
-        student.setLastName("Doe");
+        var address = modelFactory.createAddress();
+        address.setStreet("Elm Street, 15º");
+        address.setZip("222-222-222");
+
+        var repositoryAdress = new JdbcAddressRepository(connection);
+
+        // Test
+        repositoryAdress.save(address);
+        student.setFirstName("Johnny");
+        student.setLastName("Deep");
         student.setBornOn(LocalDate.of(1990, 5, 15)); // Set the date of birth
         student.setAddress(address); // Set an address
         student.setGenre(genere); // Set a genre
-
+        System.out.println(student.getFirstName());
         // Create a repository
         var repository = new JdbcStudentRepository(connection);
 
@@ -56,12 +61,14 @@ class JdbcStudentRepositoryTest {
     void shouldUpdateAStudentTest() {
         // Create an existing student
         var student = modelFactory.createStudent();
-        var genere = new JdbcGenreRepository(connection).get(1);
+        var genre = new JdbcGenreRepository(connection).get(1);
+        var address = new JdbcAddressRepository(connection).get(1);
         student.setId(1);
         student.setFirstName("Jane"); // Update the first name
         student.setLastName("Doe");
         student.setBornOn(LocalDate.of(1990, 5, 15));
-        student.setGenre(genere);
+        student.setAddress(address);
+        student.setGenre(genre);
 
         // Create a repository
         var repository = new JdbcStudentRepository(connection);
@@ -104,7 +111,7 @@ class JdbcStudentRepositoryTest {
         var repository = new JdbcStudentRepository(connection);
 
         // Test
-        var student = repository.get(1);
+        var student = repository.get(2);
 
         // Assertions
         assertNotNull(student); // Check that a student is returned
