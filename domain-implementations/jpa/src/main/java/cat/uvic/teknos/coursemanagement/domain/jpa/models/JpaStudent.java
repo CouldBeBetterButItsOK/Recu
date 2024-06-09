@@ -63,7 +63,7 @@ public class JpaStudent implements Student{
 
     @Override
     public void setFirstName(String firstName) {
-
+        this.firstName = firstName;
     }
 
     @Override

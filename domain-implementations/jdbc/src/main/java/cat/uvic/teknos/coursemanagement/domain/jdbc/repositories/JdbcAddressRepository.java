@@ -1,9 +1,7 @@
 package cat.uvic.teknos.coursemanagement.domain.jdbc.repositories;
 
 import cat.uvic.teknos.coursemanagement.domain.jdbc.models.JdbcAddress;
-import cat.uvic.teknos.coursemanagement.domain.jdbc.models.JdbcGenre;
 import cat.uvic.teknos.coursemanagement.models.Address;
-import cat.uvic.teknos.coursemanagement.models.Genre;
 import cat.uvic.teknos.coursemanagement.repositories.AddressRepository;
 
 import java.sql.Connection;
